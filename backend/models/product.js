@@ -4,15 +4,16 @@ const productSchema = new mongoose.Schema({
     name: {
         type:String,
         required:[true, 'Please enter a product name'],
+        trim:true,
         maxLength:[100, 'product Name cannot exceed 100 characters'],
-        default:0.0,
+
 
     },
     price: {
         type:Number,
         required:[true, 'Please enter  product price'],
-        maxLength:[5, 'product price cannot exceed 5 characters']
-
+        maxLength:[5, 'product price cannot exceed 5 characters'],
+        default:0.0,
     },
 
     description:{
@@ -41,7 +42,7 @@ const productSchema = new mongoose.Schema({
     ],
     category:{ 
         type:String,
-        required:[true, 'Please select category for this product'],
+        // required:[true, 'Please select category for this product'],
         enum:{
             values:[
                 'Electronics',
@@ -70,7 +71,7 @@ const productSchema = new mongoose.Schema({
 
     seller:{
         type:String,
-        required:[true, 'Please enter product seller'],
+        // required:[true, 'Please enter product seller'],
   
 
     },
