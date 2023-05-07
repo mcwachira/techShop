@@ -6,6 +6,17 @@ const cors = require('cors')
 const path = require('path')
 const dotenv = require('dotenv')
 const connectDb = require('./config/db')
+const errorMiddlware = require('./middlewares/error')
+
+
+//handle uncaught exceptions
+process.on('UncaughtExceptions', error => {
+    console.log(`error is ${error}`)
+    console.log('shutting down server due to unhandled promise rejection')
+ 
+        process.exit(1)
+    })
+
 
 //set up dotenv file
 dotenv.config({path:'backend/config/config.env'})
@@ -48,5 +59,8 @@ app.use('/', express.static(path.join(__dirname, '/public')))
 const productRouter = require('./routes/productRoute')
 
 app.use('/api/v1', productRouter)
+
+//middleware to handle errors
+app.use(errorMiddlware)
 
 module.exports =  app
