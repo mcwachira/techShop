@@ -6,7 +6,7 @@
 
 
     //separate errors in dev mode and in production mode
-    if(process.env.NODE_EV === 'development'){
+    if(process.env.NODE_ENV === 'development'){
         res.status(err.statusCode).json({
             success:false,
             err:err,
@@ -17,7 +17,7 @@
     }
 
 
-    if(process.env.NODE_EV === 'production'){
+    if(process.env.NODE_ENV === 'production'){
         let error = {...err}
 
         error.message = err.message

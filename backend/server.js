@@ -3,7 +3,7 @@ const app =  require('./app')
 
 const Port = process.env.PORT 
 const server = app.listen(Port, () => {
-    console.log(`server started on port ${Port}`)
+    console.log(`server started on port ${Port} and in ${process.env.NODE_ENV}`)
 }) 
 
 //handle promise rejection
