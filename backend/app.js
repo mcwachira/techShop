@@ -57,8 +57,10 @@ app.use('/', express.static(path.join(__dirname, '/public')))
 //routes
 
 const productRouter = require('./routes/productRoute')
+const authRouter = require('./routes/authRoute')
 
 app.use('/api/v1', productRouter)
+app.use('/api/v1', authRouter)
 
 //middleware to handle errors
 app.use(errorMiddlware)
