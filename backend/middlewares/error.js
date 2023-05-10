@@ -34,6 +34,28 @@
             error = new ErrorHandler(message, 400)
         }
 
+        \
+    //handling error duplication in production mode
+
+    if(error.code === 110000){
+        const message = `Duplicate ${aObject.keys(err.keyValue)} entered`
+        error = new ErrorHandler(message, 400)
+    }
+
+
+    //handling wrong jwt error
+    if(error.code === 'JsonWebTokenError'){
+        const message = 'Json web token is invalid pleaser try again'
+        error = new ErrorHandler(message, 400)
+    }
+
+
+        //handling EExpired jwt error
+        if(error.code === 'TokenExpiredError'){
+            const message = 'Json web token is Expired . Try again'
+            error = new ErrorHandler(message, 400)
+        }
+
         res.status(error.statusCode).json({
             success:false,
             message:error.message || 'Internal server error'   
