@@ -6,6 +6,7 @@ const jwt  = require('jsonwebtoken')
 const sendToken = require('../utils/jwtToken')
 const sendEmail = require('../utils/sendEmail')
 const crypto = require('crypto')
+const catchAsyncErrors = require('../middlewares/catchAsyncErrors')
 
 
 
@@ -159,6 +160,44 @@ exports.resetPassword =  CatchAsyncErrors(async(req, res, next) =>{
     sendToken(user, 200, res)
 })
 
+
+//update password
+exports.updatePassword =  catchAsyncErrors(async(req,res, next) => {
+    const user  = await User.findById(req.user.id).select('+password')
+
+    //check if previous password matches to password
+    const isMatched = await user.comparePassword(req.body.oldPassword)
+    if(!isMatched){
+        return next(new  ErrorHandler('old password is incorrect') )
+    }
+
+    user.password = req.body.password
+    await user.save()
+})
+
+
+//update profile
+exports.updateProfile =  catchAsyncErrors(async(req,res, next) => {
+
+    const newProfileData ={
+        name:req.body.name,
+        email:req.body.email,
+    }
+    const user  = await User.findByIdAndUpdate(req.user.id, newProfileData, {
+        new:true,
+        runValidators:true,
+        useFindAndModify:false
+    })
+
+
+    res.status(200).json({
+        success:true,
+    user
+    })
+
+    
+})
+
 exports.logOutUser =  CatchAsyncErrors(async(req, res, next) =>{
    
     res.cookie('token', null, {
@@ -175,6 +214,66 @@ exports.logOutUser =  CatchAsyncErrors(async(req, res, next) =>{
 
 })
 
+
+
+
+
+
+//get details of logged in user
+
+exports.getUserProfile =  CatchAsyncErrors(async(req, res, next) =>{
+    const {id} = req.user
+    const user = await   User.findById(id)
+
+    res.status(200).json({
+        success:true,
+        user
+    
+    })
+
+
+    
+
+
+})
+
+
+
+
+
+//admin routes
+exports.getAllUsers =  CatchAsyncErrors(async(req, res, next) =>{
+
+
+    const users = await User.find()
+
+    res.status(200).json({
+        success:true,
+        users
+    
+    })
+
+})
+
+exports.getUserById =  CatchAsyncErrors(async(req, res, next) =>{
+    const id = req.params.id
+    console.log(id)
+    const user = await   User.findById(id)
+
+    if(!user){
+        return next(new ErrorHandler('user with that id not found', 401))
+
+    }
+
+    res.status(200).json({
+        success:true,
+        user
+    
+    })
+
+})
+
+
 exports.updateUser = CatchAsyncErrors(async(req, res, next) =>{
     const id = req.params.id
     
@@ -185,7 +284,13 @@ exports.updateUser = CatchAsyncErrors(async(req, res, next) =>{
                       return next(new ErrorHandler('user with that id not found', 404))
         }
 
-        const UserToUpdate = await User.findByIdAndUpdate(id, req.body ,{
+        const newUserData ={
+            name:req.body.name,
+            email:req.body.email,
+            role:req.body.role
+        }
+
+        const UserToUpdate = await User.findByIdAndUpdate(id, newUserData ,{
 
             new:true,
             runValidators:true,

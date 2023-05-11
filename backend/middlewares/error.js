@@ -34,7 +34,7 @@
             error = new ErrorHandler(message, 400)
         }
 
-        \
+        
     //handling error duplication in production mode
 
     if(error.code === 110000){
@@ -52,7 +52,7 @@
 
         //handling EExpired jwt error
         if(error.code === 'TokenExpiredError'){
-            const message = 'Json web token is Expired . Try again'
+            const message = 'Json web token is Expired . Try again '
             error = new ErrorHandler(message, 400)
         }
 
