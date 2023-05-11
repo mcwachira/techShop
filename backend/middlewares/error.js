@@ -37,7 +37,7 @@
         
     //handling error duplication in production mode
 
-    if(error.code === 110000){
+    if(error.code === 110000){  
         const message = `Duplicate ${aObject.keys(err.keyValue)} entered`
         error = new ErrorHandler(message, 400)
     }

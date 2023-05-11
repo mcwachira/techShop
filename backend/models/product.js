@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const catchAsyncErrors = require('../middlewares/catchAsyncErrors')
 
 const productSchema = new mongoose.Schema({
     name: {
@@ -83,6 +84,11 @@ const productSchema = new mongoose.Schema({
     },
     reviews:[
         {
+            user:{
+                type:mongoose.Schema.ObjectId,
+                ref:'User',
+                required:true
+            },
             name:{
                 type:String,
                 required:true,
@@ -94,17 +100,15 @@ const productSchema = new mongoose.Schema({
             comment:{
                 type:String,
                 required:true,
-            }
+            },
         }
     ],
 
-    user:{
-        type:mongoose.Schema.ObjectId,
-        ref:'User',
-        required:true,
-    }
+
 },
 { timestamps: true }
 )
+
+
 
 module.exports=mongoose.model('Product' ,productSchema)
