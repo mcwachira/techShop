@@ -1,23 +1,29 @@
 import React, {useEffect} from 'react'
 import  {useSelector, useDispatch} from 'react-redux'
  import MetaData from './Layout/metaData'
-import { getProducts } from '../redux/reducers/product/productActions'
+import { clearErrors, getProducts } from '../redux/reducers/product/productActions'
 import Product from './product/product'
 import Loader from './Layout/Loader'
+import { toast } from 'react-toastify'
 
 const Home = () => {
 
-  const {products, loading} = useSelector((state) => state.products)
+  const {products, isLoading , error} = useSelector((state) => state.products)
   console.log(products)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getProducts())
+
+    if(error){
+      toast.error(error)
+              dispatch(clearErrors())
+            }
   }, [dispatch])
   return (
     <>
-    {loading ? <Loader/> :(
+    {isLoading ? <Loader/> :(
 <>
 <MetaData title={"Buy the best products Online"}/>
     
