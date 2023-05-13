@@ -10,7 +10,7 @@ const product = require('../models/product')
 
 //create a new product
 
-exports.newProduct =  asyncHandler(async(req, res, next) =>{
+exports.newProduct =  CatchAsyncErrors(async(req, res, next) =>{
     console.log(req.body)
 
 
@@ -28,23 +28,27 @@ exports.newProduct =  asyncHandler(async(req, res, next) =>{
 })
 
 
-exports.getProducts = asyncHandler(async(req, res, next) =>{
+exports.getProducts =CatchAsyncErrors(async(req, res, next) =>{
 
     //number of products tro display per page
-    const resultsPerPage = 4;
+    const resultsPerPage = 8;
 
     //product count
     const productCount = await Product.countDocuments()
 
     //find product by  search term
-    const  apiFeatures= new APIFeatures(product.find(), req.query).search().filter().pagination(resultsPerPage)
+    const  apiFeatures= new APIFeatures(Product.find(), req.query)
+    .search()
+    .filter()
+    .pagination(resultsPerPage) //pagination reduces time teken to fetch items as we only fetch a number of items
 
 
-        const allProducts = await apiFeatures.query 
+        const products = await apiFeatures.query 
+        console.log(products)
         res.status(200).json({
             success:true,
             message:'This will show all the products',
-            allProducts,
+           products,
             productCount
         
         })

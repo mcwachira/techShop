@@ -10,9 +10,7 @@ class APIFeatures  {
                 $regex:this.queryStr.keyword, 
                 $options:'i'
             }
-        }: {
-
-        }
+        }: {}
 
         this.query = this.query.find({...keyword})
 
@@ -35,6 +33,7 @@ class APIFeatures  {
         queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g,  match =>`$${match}` )
 
 
+        console.log(queryCopy)
 
         this.query = this.query.find(JSON.parse(queryStr))   
         
@@ -46,7 +45,7 @@ class APIFeatures  {
 
     pagination(resultsPerPage) {
          const currentPage = Number(this.queryStr.page) ||1;
-         const skip  = resultsPerPage* (currentPage - 1)
+         const skip  = resultsPerPage  * (currentPage - 1)
 
 
         this.query = this.query.limit(resultsPerPage).skip(skip)
