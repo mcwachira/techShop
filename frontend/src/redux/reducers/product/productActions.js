@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { PRODUCTS_ACTION_TYPE } from './productConstants'
 
-export const getProducts = () => async(dispatch) => {
+export const getProducts = (keyword ='') => async(dispatch) => {
 
     try {
 
@@ -11,7 +11,7 @@ export const getProducts = () => async(dispatch) => {
         })
 
         //get product data from backend via axios
-        const {data} = await axios.get('/api/v1/products')
+        const {data} = await axios.get(`/api/v1/products?keyword=${keyword}`)
         console.log(data)
         dispatch({
             type:PRODUCTS_ACTION_TYPE.FETCH_ALL_PRODUCTS_SUCCESS,

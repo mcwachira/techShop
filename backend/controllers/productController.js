@@ -49,7 +49,8 @@ exports.getProducts =CatchAsyncErrors(async(req, res, next) =>{
             success:true,
             message:'This will show all the products',
            products,
-            productCount
+            productCount,
+            resultsPerPage
         
         })
 

@@ -5,11 +5,13 @@ import { clearErrors, getProducts } from '../redux/reducers/product/productActio
 import Product from './product/product'
 import Loader from './Layout/Loader'
 import { toast } from 'react-toastify'
+import PaginatedItems from './Layout/PaginatedItems'
+
 
 const Home = () => {
 
-  const {products, isLoading , error} = useSelector((state) => state.products)
-  console.log(products)
+  const {products, isLoading , error, resultsPerPage} = useSelector((state) => state?.products)
+  console.log(resultsPerPage)
 
   const dispatch = useDispatch()
 
@@ -41,6 +43,11 @@ const Home = () => {
 
 
 </section>
+
+<div className='d-flex.justify-content-center mt-5'>
+
+<PaginatedItems productsPerPage={2}products={products}/>
+</div>
 </>
 
     )}

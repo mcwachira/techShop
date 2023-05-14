@@ -7,6 +7,7 @@ const sendToken = require('../utils/jwtToken')
 const sendEmail = require('../utils/sendEmail')
 const crypto = require('crypto')
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors')
+const cloudinary = require('cloudinary').v2;
 
 
 
@@ -16,6 +17,13 @@ const catchAsyncErrors = require('../middlewares/catchAsyncErrors')
 //create a new user /api/v1/register
 
 exports.registerUser =  asyncHandler(async(req, res, next) =>{
+
+    //upload profile image
+    const results = await  cloudinary.uploader.upload(req.body.avatar, {
+        folder:'avatars',
+        width:150,
+        Crop:'scaler'
+    })
   
     const {name, email, password} = req.body
 
@@ -25,8 +33,8 @@ exports.registerUser =  asyncHandler(async(req, res, next) =>{
             email,
             password,
             avatar:{
-                "public_id": "products/dsvbpny402gelwugv2le",
-                "url": "https://res.cloudinary.com/bookit/image/upload/v1608062030/products/dsvbpny402gelwugv2le.jpg"
+                "public_id": results.public_id,
+                "url": results.secure_url
             }
         })
         sendToken(user, 200, res)
@@ -43,6 +51,7 @@ exports.registerUser =  asyncHandler(async(req, res, next) =>{
 exports.loginUser =  CatchAsyncErrors(async(req, res, next) =>{
    
     const {email, password} = req.body
+    console.log(email, password)
 
     //checks for email and password
     if(!email || !password){

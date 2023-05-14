@@ -6,6 +6,9 @@ import Header from './components/Layout/Header'
 import Footer from './components/Layout/Footer'
 import ProductDetails from './components/productDetails/ProductDetails'
 import { ToastContainer } from 'react-toastify'
+import Login from './components/user/login'
+import './App.css'
+import Register from './components/user/Register'
 
 function App() {
 
@@ -19,6 +22,9 @@ function App() {
       <div className='container container-fluid'>  
       <Routes>
 <Route path='/' element={<Home/>}/>
+
+<Route path='/login' element={<Login/>}/>
+<Route path='/register' element={<Register/>}/>
 
 <Route path='/product/:id' element={<ProductDetails/>}/>
     </Routes> 

@@ -7,6 +7,8 @@ const path = require('path')
 const dotenv = require('dotenv')
 const connectDb = require('./config/db')
 const errorMiddlware = require('./middlewares/error')
+const cloudinary = require('cloudinary').v2;
+const fileUpload = require('express-fileupload')
 
 
 //handle uncaught exceptions
@@ -29,6 +31,15 @@ const app = express()
 //connect our database
 connectDb()
 
+
+// Configuration 
+cloudinary.config({
+    cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
+    api_key:process.env.CLOUDINARY_API_KEY,
+    api_secret:process.env.CLOUDINARY_API_SECRET
+  });
+  
+
 // for parsing application/json
 app.use(express.json({ limit: "30mb", extended: true }))
 // for parsing application/x-www-form-urlencoded
@@ -50,6 +61,9 @@ app.use(express.static('public')) */
 
 //enabling express to locate static files using virtual path /
 app.use('/', express.static(path.join(__dirname, '/public')))
+
+//upload files
+app.use(fileUpload())
 
 
 
