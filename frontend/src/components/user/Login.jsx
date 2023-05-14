@@ -28,14 +28,8 @@ const Login = () => {
     }
 
     const { email, password} = formValues
-    console.log(email, password)
-    const handleSubmit =(e) => {
+    // console.log(email, password)
 
-        e.preventDefault()
-        dispatch(login(email, password))
-       
-
-    }
 
     const {isLoading, isAuthenticated, error} = useSelector((state) => state.auth)
 
@@ -53,6 +47,13 @@ const Login = () => {
     }, [dispatch, error, isAuthenticated , navigate])
 
     
+    const handleSubmit =(e) => {
+
+      e.preventDefault()
+      dispatch(login(email, password))
+     
+
+  }
   return (
 
 

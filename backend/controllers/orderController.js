@@ -40,9 +40,19 @@ OrderStatus,
 })
 
 
+// Get logged in user orders   =>   /api/v1/orders/me
+exports.myOrders = CatchAsyncErrors(async (req, res, next) => {
+    const orders = await Order.find({ user: req.user.id })
+
+    res.status(200).json({
+        success: true,
+        orders
+    })
+})
 
 
-exports.getOrders = CatchAsyncErrors(async(req, res, next) =>{
+
+exports.allOrders = CatchAsyncErrors(async(req, res, next) =>{
 
     //number of orders tro display per page
 
@@ -57,12 +67,12 @@ exports.getOrders = CatchAsyncErrors(async(req, res, next) =>{
     // const  apiFeatures= new APIFeatures(order.find(), req.query).search().filter().pagination(resultsPerPage)
 
 
-        const allOrders = await Order.find()
-  allOrders.map((order) => total+=order.totalPrice)
+        const orders = await Order.find()
+orders.map((order) => total+=order.totalPrice)
         res.status(200).json({
             success:true,
             message:'This will show all the orders',
-            allOrders,
+          orders,
            orderCount,
            total,
         

@@ -46,7 +46,7 @@ const Home = () => {
 
 <div className='d-flex.justify-content-center mt-5'>
 
-<PaginatedItems productsPerPage={2}products={products}/>
+{/* <PaginatedItems productsPerPage={2}products={products}/> */}
 </div>
 </>
 

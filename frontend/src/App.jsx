@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import Home from './components/Home'
 import {Routes, Route} from 'react-router-dom'
@@ -9,9 +9,20 @@ import { ToastContainer } from 'react-toastify'
 import Login from './components/user/login'
 import './App.css'
 import Register from './components/user/Register'
+import { useDispatch } from 'react-redux'
+import { loadUser } from './redux/reducers/user/userActions'
+import { store } from './redux/store'
 
 function App() {
 
+  //Loads logged in user if present
+
+  useEffect(() => {
+
+
+store.dispatch(loadUser())
+
+  }, [])
 
   return (
     <div className='App'>

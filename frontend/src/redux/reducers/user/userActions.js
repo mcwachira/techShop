@@ -1,38 +1,32 @@
 import axios from 'axios'
 import { USERS_ACTION_TYPE } from './userConstants'
 
-export const login = (email, password) => async(dispatch) => {
-
+// Login
+export const login = (email, password) => async (dispatch) => {
     try {
 
-
-        dispatch({
-            type:USERS_ACTION_TYPE.LOGIN_START
-
-        })
+        dispatch({ type: USERS_ACTION_TYPE.LOAD_USER_START })
 
         const config = {
-            headers:{
-                'Content-Type':'application/json'
+            headers: {
+                'Content-Type': 'application/json'
             }
         }
-        //get product data from backend via axios
-        const {data} = await axios.post(`/api/v1/user/login`, {email, password}, config)
-        console.log(email)
-        console.log(data)
+
+        const { data } = await axios.post('/api/v1/user/login', { email, password }, config)
+
         dispatch({
-            type:USERS_ACTION_TYPE.LOGIN_SUCCESS,
-            payload:data.user
+            type:USERS_ACTION_TYPE.LOAD_USER_SUCCESS,
+            payload: data.user
         })
 
     } catch (error) {
         dispatch({
-            type:USERS_ACTION_TYPE.LOGIN_FAILED,
-            payload:error.response.data.message
-
+            type:USERS_ACTION_TYPE.LOAD_USER_FAILED,
+            payload: error.response.data.message
         })
-        
-    }}
+    }
+}
 
 
     export const register = (userData) => async(dispatch) => {
@@ -98,6 +92,59 @@ export const getUserDetails = (id) => async(dispatch) => {
 
 
 
+
+    //load user
+
+    export const loadUser = () => async(dispatch) => {
+
+        try {
+    
+    
+            dispatch({
+                type:USERS_ACTION_TYPE.LOAD_USER_START
+    
+            })
+    
+            //get product data from backend via axios
+            const {data} = await axios.get(`/api/v1/user/profile`)
+       
+            dispatch({
+                type:USERS_ACTION_TYPE.LOAD_USER_SUCCESS,
+                payload:data.user
+            })
+    
+        } catch (error) {
+            dispatch({
+                type:USERS_ACTION_TYPE.LOAD_USER_FAILED,
+                payload:error.response.data.message
+    
+            })
+            
+        }}
+    
+
+
+            //log out user
+
+    export const logOutUser = () => async(dispatch) => {
+
+        try {
+     await axios.get(`/api/v1/user/logout`)
+       
+            dispatch({
+                type:USERS_ACTION_TYPE.LOGOUT_USER_SUCCESS,
+               
+            })
+    
+        } catch (error) {
+            dispatch({
+                type:USERS_ACTION_TYPE.LOGOUT_USER_FAILED,
+                payload:error.response.data.message
+    
+            })
+            
+        }}
+    
     //clear errors
 
     export const clearErrors = () => async(dispatch) => {

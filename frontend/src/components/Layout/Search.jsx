@@ -1,5 +1,5 @@
 import React , {useState} from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {FaSearch} from 'react-icons/fa'
 import {useNavigate}  from 'react-router-dom'
 const Search = () => {
 
@@ -33,7 +33,7 @@ const Search = () => {
         />
         <div className="input-group-append">
           <button id="search_btn" className="btn">
-            <FontAwesomeIcon icon="fa fa-search"/>
+            <FaSearch/>
           </button>
         </div>
       </div>
