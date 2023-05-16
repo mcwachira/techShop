@@ -1,65 +1,52 @@
 import { USERS_ACTION_TYPE } from "./userConstants"
 
 const INITIAL_STATE = {
-    isLoading:false,
-    isAuthenticated:false,
-    error:null,
-    user:{},
- 
+// isLoading:false,
+// isUpdated:false,
+
+
 }
 
 
 
-export const authReducer  = (state =INITIAL_STATE, action ={} ) => {
+export const userReducer  = (state =INITIAL_STATE, action ={} ) => {
     switch(action.type){
 
-        case USERS_ACTION_TYPE.LOGIN_START:
-            case USERS_ACTION_TYPE.REGISTER_USER_START:
-        case USERS_ACTION_TYPE.LOAD_USER_START:
+        case USERS_ACTION_TYPE.UPDATE_PROFILE_START:
+            case USERS_ACTION_TYPE.UPDATE_PASSWORD_START:
+         
             return {
+                ...state,
                isLoading:true,
                isAuthenticated:false,
             }
 
-            case USERS_ACTION_TYPE.LOGIN_SUCCESS:
-                case USERS_ACTION_TYPE.REGISTER_USER_SUCCESS:
-                            case USERS_ACTION_TYPE.LOAD_USER_SUCCESS:
-                return {
-                  ...state,
-                   user:action.payload,
-                   isAuthenticated:true,
-                   isLoading:false,
-                }
+            case USERS_ACTION_TYPE.UPDATE_PROFILE_SUCCESS:
+                case USERS_ACTION_TYPE.UPDATE_PASSWORD_SUCCESS:
+         
+            return {
+                ...state,
+               isLoading:false,
+               isUpdated:action.payload
+            }
 
-                case USERS_ACTION_TYPE.LOGOUT_USER_SUCCESS:
-                    return {
-                        isLoading:false, 
-                        isAuthenticated:false,
-                        user:null,
-                    }
-                case USERS_ACTION_TYPE.LOAD_USER_FAILED:
-                    return {
-                        isLoading:false, 
-                       isAuthenticated:false,
-                       user:null,
-                       error:action.payload
-                    }
+            case USERS_ACTION_TYPE.UPDATE_PROFILE_RESET:
+                case USERS_ACTION_TYPE.UPDATE_PASSWORD_RESET:
+         
+            return {
+                ...state,
+               isUpdated:false
+            
+            }
 
-                    case USERS_ACTION_TYPE.LOGOUT_USER_FAILED:
-                        return {
-                            ...state,
-                            error:action.payload
-                        }   
-                        
-                        case USERS_ACTION_TYPE.LOGIN_FAILED:
-                    case USERS_ACTION_TYPE.REGISTER_USER_FAILED:
-                    return {
-                        ...state,
-                       isLoading:false, 
-                       isAuthenticated:false,
-                       user:null,
-                       error:action.payload
-                    } 
+            case USERS_ACTION_TYPE.UPDATE_PROFILE_FAILED:
+                case USERS_ACTION_TYPE.UPDATE_PASSWORD_FAILED:
+         
+            return {
+                ...state,
+               isLoading:false,
+               error:action.payload
+            }
 
                     case USERS_ACTION_TYPE.CLEAR_ERRORS:
                     return {

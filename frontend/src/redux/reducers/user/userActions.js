@@ -106,7 +106,7 @@ export const getUserDetails = (id) => async(dispatch) => {
             })
     
             //get product data from backend via axios
-            const {data} = await axios.get(`/api/v1/user/profile`)
+            const {data} = await axios.get('/api/v1/profile')
        
             dispatch({
                 type:USERS_ACTION_TYPE.LOAD_USER_SUCCESS,
@@ -153,3 +153,139 @@ export const getUserDetails = (id) => async(dispatch) => {
     
     })
 }
+
+
+export const updateProfile = (userData) => async(dispatch) => {
+
+    try {
+
+        dispatch({
+            type:USERS_ACTION_TYPE.UPDATE_PROFILE_START
+        })
+
+        const config = {
+            headers:{
+                'Content-Type': 'multipart/form-data'
+
+            }
+        }
+
+        console.log(userData)
+        //get product data from backend via axios
+        const {data} = await axios.put('/api/v1/profile/update',userData, config)
+
+        dispatch({
+            type:USERS_ACTION_TYPE.UPDATE_PROFILE_SUCCESS,
+            payload:data.success
+        })
+
+    } catch (error) {
+        dispatch({
+            type:USERS_ACTION_TYPE.UPDATE_PROFILE_FAILED,
+            payload:error.response.data.message
+
+        })
+        
+    }}
+
+
+export const updatePassword = (passwords) => async(dispatch) => {
+
+    try {
+
+        dispatch({
+            type:USERS_ACTION_TYPE.UPDATE_PASSWORD_START
+        })
+
+        const config = {
+            headers:{
+                'Content-Type': 'application/json'
+
+            }
+        }
+
+        //get product data from backend via axios
+        const {data} = await axios.put('/api/v1/password/update',passwords, config)
+
+        dispatch({
+            type:USERS_ACTION_TYPE.UPDATE_PASSWORD_SUCCESS,
+            payload:data.success
+        })
+
+    } catch (error) {
+        dispatch({
+            type:USERS_ACTION_TYPE.UPDATE_PASSWORD_FAILED,
+            payload:error.response.data.message
+
+        })
+        
+    }}
+
+
+    export const forgotPassword = (email) => async(dispatch) => {
+
+        try {
+    
+            dispatch({
+                type:USERS_ACTION_TYPE.FORGOT_PASSWORD_START
+            })
+    
+            const config = {
+                headers:{
+                    'Content-Type': 'application/json'
+    
+                }
+            }
+    
+            //get product data from backend via axios
+            const {data} = await axios.post('/api/v1/password/forgot',email, config)
+    
+            dispatch({
+                type:USERS_ACTION_TYPE.FORGOT_PASSWORD_SUCCESS,
+                payload:data.message
+            })
+    
+        } catch (error) {
+            dispatch({
+                type:USERS_ACTION_TYPE.FORGOT_PASSWORD_FAILED,
+                payload:error.response.data.message
+    
+            })
+            
+        }}
+
+
+
+    export const resetPassword = (token, passwords) => async(dispatch) => {
+
+        try {
+    
+            dispatch({
+                type:USERS_ACTION_TYPE.NEW_PASSWORD_START
+            })
+    
+            const config = {
+                headers:{
+                    'Content-Type': 'application/json'
+    
+                }
+            }
+    
+            //get product data from backend via axios
+            const {data} = await axios.put(`api/v1/password/reset/${token}`,passwords, config)
+    
+            dispatch({
+                type:USERS_ACTION_TYPE.NEW_PASSWORD_SUCCESS,
+                payload:data.success
+            })
+    
+        } catch (error) {
+            dispatch({
+                type:USERS_ACTION_TYPE.NEW_PASSWORD_FAILED,
+                payload:error.response.data.message
+    
+            })
+            
+        }}
+
+    

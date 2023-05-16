@@ -58,9 +58,10 @@ const Login = () => {
 
 
     <>
-        <MetaData title={"Login"}/>
+   
     {isLoading ? <Loader/> : (
-
+<>
+<MetaData title={"Login"}/>
  <div className="row wrapper"> 
  <div className="col-10 col-lg-5">
  <form className="shadow-lg" onSubmit={handleSubmit}>
@@ -104,7 +105,7 @@ const Login = () => {
    </div>
 </div>
 
-
+</>
     )}
 
 

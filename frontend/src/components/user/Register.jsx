@@ -82,9 +82,11 @@ const Register = () => {
     }, [dispatch, error, isAuthenticated , navigate])
   return (
    <>
-        <MetaData title={"Register"}/>
+  
    {isLoading ? <Loader/> : (
- <div className="container container-fluid">
+    <>
+
+      <MetaData title={"Register"}/>
  <div className="row wrapper">
  <div className="col-10 col-lg-5">
  <form className="shadow-lg" encType='multipart/form-data' onSubmit={handleSubmit} >
@@ -162,7 +164,7 @@ const Register = () => {
    </form>
    </div>
 </div>
-</div>
+</>
    )}
     </>
   )

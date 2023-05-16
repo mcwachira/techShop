@@ -9,12 +9,17 @@ import { ToastContainer } from 'react-toastify'
 import Login from './components/user/login'
 import './App.css'
 import Register from './components/user/Register'
-import { useDispatch } from 'react-redux'
+
 import { loadUser } from './redux/reducers/user/userActions'
 import { store } from './redux/store'
+import Profile from './components/user/Profile'
+import ProtectedRoute from './components/route/ProtectedRoute'
+import UpdateProfile from './components/user/UpdateProfile'
+import UpdatePassword from './components/user/UpdatePassword'
+import ForgotPassword from './components/user/ForgotPassword'
+import NewPassword from './components/user/NewPassword'
 
 function App() {
-
   //Loads logged in user if present
 
   useEffect(() => {
@@ -37,6 +42,14 @@ store.dispatch(loadUser())
 <Route path='/login' element={<Login/>}/>
 <Route path='/register' element={<Register/>}/>
 
+<Route path='/profile'element={<ProtectedRoute> <Profile/> </ProtectedRoute>}/>
+<Route path='/profile/update' element={ <ProtectedRoute> <UpdateProfile/> </ProtectedRoute> }/>
+<Route path='/password/update' element={ <ProtectedRoute> <UpdatePassword/> </ProtectedRoute> }/>
+<Route path='/password/forgot' element={  <ForgotPassword/> }/>
+<Route path='/password/reset/:token' element={  <NewPassword/> }/>
+
+
+
 <Route path='/product/:id' element={<ProductDetails/>}/>
     </Routes> 
       
@@ -48,3 +61,5 @@ store.dispatch(loadUser())
 }
 
 export default App
+
+

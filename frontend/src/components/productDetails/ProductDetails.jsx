@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import { clearErrors, getProductsDetails } from '../../redux/reducers/product/productActions';
 import Loader from '../Layout/Loader'
 import MetaData from '../Layout/metaData';
-import { ToastContainer , toast} from 'react-toastify'
+import { toast} from 'react-toastify'
+import {FaStar} from 'react-icons/fa'
 import { Carousel } from 'react-bootstrap';
 
 const ProductDetails = () => {
@@ -31,8 +32,10 @@ toast.error(error)
   return (
 
     <>
-    
+        <MetaData title={product?.name || 'product'}/>
  {isLoading ? <Loader/>: (
+      <>
+      <MetaData title={product?.name || 'product'}/>
     <div className="row f-flex justify-content-around">
     <div className="col-12 col-lg-5 img-fluid" id="product_image">
         <Carousel pause='hover'>
@@ -98,11 +101,11 @@ toast.error(error)
                             <div className="modal-body">
 
                                 <ul className="stars" >
-                                    <li className="star"><i className="fa fa-star"></i></li>
-                                    <li className="star"><i className="fa fa-star"></i></li>
-                                    <li className="star"><i className="fa fa-star"></i></li>
-                                    <li className="star"><i className="fa fa-star"></i></li>
-                                    <li className="star"><i className="fa fa-star"></i></li>
+                                    <li className="star"><FaStar/></li>
+                                    <li className="star"><FaStar/></li>
+                                    <li className="star"><FaStar/></li>
+                                    <li className="star"><FaStar/></li>
+                                    <li className="star"><FaStar/></li>
                                 </ul>
 
                                 <textarea name="review" id="review" className="form-control mt-3">
@@ -123,6 +126,7 @@ toast.error(error)
 
 </div>
 
+</>
  )}
    
 
