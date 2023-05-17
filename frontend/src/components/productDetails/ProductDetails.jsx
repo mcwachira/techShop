@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect , useState} from 'react'
 import  {useSelector, useDispatch , } from 'react-redux'
 import { useParams } from 'react-router-dom';
 import { clearErrors, getProductsDetails } from '../../redux/reducers/product/productActions';
@@ -7,17 +7,21 @@ import MetaData from '../Layout/metaData';
 import { toast} from 'react-toastify'
 import {FaStar} from 'react-icons/fa'
 import { Carousel } from 'react-bootstrap';
+import { addItemsToCart } from '../../redux/reducers/cart/cartAction';
 
 const ProductDetails = () => {
     const  { id } = useParams();
 
-    console.log(id)
+    const [quantity, setQuantity]= useState(1)
+
+
+    // console.log(id)
    
     const dispatch = useDispatch()
 
 
     const {product,isLoading, error} = useSelector((state) => state.productDetails)
-    console.log(product)
+    // console.log(product)
 
 
     useEffect(() => {
@@ -28,7 +32,39 @@ toast.error(error)
       }
     }, [dispatch, id, error])
 
+
+    const increaseQty = () => {
+
+        const count = document.querySelector('.count')
+        if(count.valueAsNumber >= product.stock) return
+
+        const qty = count.valueAsNumber + 1
+        setQuantity(qty)
+    
+    
+    }
+
+
+
+    const decreaseQty = () => {
+
+        const count = document.querySelector('.count')
+        if(count.valueAsNumber <= 1) return
+
+        const qty = count.valueAsNumber - 1
+        setQuantity(qty)
+    
+    }
  
+    const addToCart =() => {
+        dispatch(addItemsToCart(id, quantity))
+        console.log('clicked')
+        toast.success('product added successfully')
+
+
+    }
+
+
   return (
 
     <>
@@ -63,13 +99,13 @@ toast.error(error)
 
         <p id="product_price">${product.price}</p>
         <div className="stockCounter d-inline">
-            <span className="btn btn-danger minus">-</span>
+            <span className="btn btn-danger minus" onClick={decreaseQty}>-</span>
 
-            <input type="number" className="form-control count d-inline" value="1" readOnly />
+            <input type="number" className="form-control count d-inline" value={quantity} readOnly />
 
-            <span className="btn btn-primary plus">+</span>
+            <span className="btn btn-primary plus" onClick={increaseQty}>+</span>
         </div>
-         <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4">Add to Cart</button>
+         <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4" disabled={product.stock ==0} onClick={addToCart}>Add to Cart</button>
 
         <hr/>
 
@@ -101,18 +137,18 @@ toast.error(error)
                             <div className="modal-body">
 
                                 <ul className="stars" >
-                                    <li className="star"><FaStar/></li>
-                                    <li className="star"><FaStar/></li>
-                                    <li className="star"><FaStar/></li>
-                                    <li className="star"><FaStar/></li>
-                                    <li className="star"><FaStar/></li>
+                                    <li className="star"><FaStar size={40} /></li>
+                                    <li className="star"><FaStar size={40} /></li>
+                                    <li className="star"><FaStar size={40} /></li>
+                                    <li className="star"><FaStar size={40} /></li>
+                                    <li className="star"><FaStar size={40} /></li>
                                 </ul>
 
                                 <textarea name="review" id="review" className="form-control mt-3">
 
                                 </textarea>
 
-                                <button className="btn my-3 float-right review-btn px-4 text-white" data-dismiss="modal" aria-label="Close">Submit</button>
+                                <button className="btn my-3 float-right review-btn px-4 text-white" data-dismiss="modal" aria-label="Close" >Submit</button>
                             </div>
                         </div>
                     </div>

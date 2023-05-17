@@ -41,7 +41,7 @@ export const getProductsDetails = (id) => async(dispatch) => {
 
         //get product data from backend via axios
         const {data} = await axios.get(`/api/v1/product/${id}`)
-        console.log(data)
+        // console.log(data)
         dispatch({
             type:PRODUCTS_ACTION_TYPE.FETCH_PRODUCT_DETAILS_SUCCESS,
             payload:data.product
