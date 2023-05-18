@@ -5,14 +5,16 @@ import Loader from '../Layout/Loader'
 import MetaData from '../Layout/metaData';
 import { toast} from 'react-toastify'
 import { addItemsToCart ,removeItemsFromCart} from '../../redux/reducers/cart/cartAction';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
+import Steps from './CheckOutSteps';
 const Cart = () => {
 
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const {cartItems} = useSelector(state => state.cart)
+    const {cartItems} = useSelector(state => state?.cart)
     console.log(cartItems)
 
     const increaseQty = (id, quantity, stock) => {
@@ -45,7 +47,13 @@ const Cart = () => {
         dispatch(removeItemsFromCart(id))
     }
 
-  return (
+    const checkoutHandler = () => {
+
+        // navigate('/login?redirect=shipping')
+      navigate('/shipping')
+    }  
+    
+    return (
 <>
 {cartItems.length === 0   ? <h2  className='mt-5'>Your cart is Empty</h2> :
 <>
@@ -62,7 +70,7 @@ const Cart = () => {
 
 <>
 <hr/>
-<div className="cart-item" key={item.key}>
+<div className="cart-item" key={item.product}>
                 <div className="row">
                     <div className="col-4 col-lg-3">
                         <img src="./images/airpords.jpg" alt="Laptop" height="90" width="115"/>
@@ -111,7 +119,7 @@ const Cart = () => {
                     </span></p>
 
                 <hr />
-                <button id="checkout_btn" className="btn btn-primary btn-block">Check out</button>
+                <button id="checkout_btn" className="btn btn-primary btn-block" onClick={checkoutHandler}>Check out</button>
             </div>
         </div>
     </div>

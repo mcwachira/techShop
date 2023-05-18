@@ -19,6 +19,8 @@ import UpdatePassword from './components/user/UpdatePassword'
 import ForgotPassword from './components/user/ForgotPassword'
 import NewPassword from './components/user/NewPassword'
 import Cart from './components/cart/Cart'
+import ShippingInfo from './components/cart/ShippingInfo'
+import ConfirmOrder from './components/cart/ConfirmOrder'
 
 function App() {
   //Loads logged in user if present
@@ -49,6 +51,8 @@ store.dispatch(loadUser())
 <Route path='/profile'element={<ProtectedRoute> <Profile/> </ProtectedRoute>}/>
 <Route path='/profile/update' element={ <ProtectedRoute> <UpdateProfile/> </ProtectedRoute> }/>
 <Route path='/password/update' element={ <ProtectedRoute> <UpdatePassword/> </ProtectedRoute> }/>
+<Route path='/shipping' element={ <ProtectedRoute> <ShippingInfo/> </ProtectedRoute> }/>
+<Route path='/order/confirm' element={ <ProtectedRoute> <ConfirmOrder/> </ProtectedRoute> }/>
 <Route path='/password/forgot' element={  <ForgotPassword/> }/>
 <Route path='/password/reset/:token' element={  <NewPassword/> }/>
 

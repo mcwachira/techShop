@@ -1,7 +1,8 @@
 import { CART_ACTION_TYPE } from "./cartConstants"
 
 const INITIAL_STATE = {
-    cartItems:[]
+    cartItems:[],
+    shippingInfo:{}
 }
 
 export const cartReducer = (state=INITIAL_STATE, action={}) => {
@@ -29,6 +30,11 @@ export const cartReducer = (state=INITIAL_STATE, action={}) => {
             cartItems:state.cartItems.filter((i) => i.product  !== action.payload)
         }
 
+        case CART_ACTION_TYPE.SAVE_SHIPPING_INFO:
+            return {
+                ...state,
+                shippingInfo:action.payload
+            }
 
         default:
             return state
