@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect , useState } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import Home from './components/Home'
 import {Routes, Route} from 'react-router-dom'
@@ -21,17 +21,37 @@ import NewPassword from './components/user/NewPassword'
 import Cart from './components/cart/Cart'
 import ShippingInfo from './components/cart/ShippingInfo'
 import ConfirmOrder from './components/cart/ConfirmOrder'
+import axios from 'axios'
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
+import Payment from './components/cart/Payment'
 
 function App() {
   //Loads logged in user if present
+
+  const [stripeApiKey, setStripeApiKey] =  useState('')
+
+
+
+  //function to fetch stripe api key from backend
 
   useEffect(() => {
 
 
 store.dispatch(loadUser())
 
+const getStripeApiKey = async() => {
+
+  const {data} =  await axios.get('/api/v1/stripe-key')  
+
+  setStripeApiKey(data.stripeApiKey)
+
+}
+getStripeApiKey()
+
   }, [])
 
+  console.log(stripeApiKey)
   return (
     <div className='App'>
 
@@ -53,6 +73,18 @@ store.dispatch(loadUser())
 <Route path='/password/update' element={ <ProtectedRoute> <UpdatePassword/> </ProtectedRoute> }/>
 <Route path='/shipping' element={ <ProtectedRoute> <ShippingInfo/> </ProtectedRoute> }/>
 <Route path='/order/confirm' element={ <ProtectedRoute> <ConfirmOrder/> </ProtectedRoute> }/>
+
+
+{
+ stripeApiKey && 
+<Route path='/payment' element={ <Elements stripe={loadStripe(stripeApiKey)}> 
+<ProtectedRoute> <Payment/> </ProtectedRoute>
+</Elements>
+ }/>
+}
+
+
+
 <Route path='/password/forgot' element={  <ForgotPassword/> }/>
 <Route path='/password/reset/:token' element={  <NewPassword/> }/>
 

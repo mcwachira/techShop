@@ -74,9 +74,12 @@ const productRouter = require('./routes/productRoute')
 const authRouter = require('./routes/authRoute')
 const orderRouter = require('./routes/orderRoute')
 
+const paymentRouter = require('./routes/paymentRoute')
+
 app.use('/api/v1', productRouter)
 app.use('/api/v1', authRouter)
 app.use('/api/v1', orderRouter)
+app.use('/api/v1', paymentRouter)
 
 //middleware to handle errors
 app.use(errorMiddlware)

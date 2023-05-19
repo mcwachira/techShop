@@ -29,7 +29,7 @@ const ConfirmOrder = () => {
           }
   
           sessionStorage.setItem('orderInfo', JSON.stringify(data))
-          navigate('/')
+          navigate('/payment')
       }
   return (
     <>
@@ -50,6 +50,7 @@ const ConfirmOrder = () => {
                     <h4 className="mt-4">Your Cart Items:</h4>
 
                     {cartItems.map(item => (
+                    
                         <>
                             <hr />
                             <div className="cart-item my-1" key={item.product}>

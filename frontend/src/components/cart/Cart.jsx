@@ -7,7 +7,7 @@ import { toast} from 'react-toastify'
 import { addItemsToCart ,removeItemsFromCart} from '../../redux/reducers/cart/cartAction';
 import { Link , useNavigate} from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
-import Steps from './CheckOutSteps';
+
 const Cart = () => {
 
 
