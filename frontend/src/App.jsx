@@ -25,6 +25,7 @@ import axios from 'axios'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import Payment from './components/cart/Payment'
+import OrderSuccess from './components/cart/OrderSuccess'
 
 function App() {
   //Loads logged in user if present
@@ -67,6 +68,7 @@ getStripeApiKey()
 
 
 <Route path='/cart' element={<Cart/>}/>
+<Route path='/success' element={<OrderSuccess/>}/>
 
 <Route path='/profile'element={<ProtectedRoute> <Profile/> </ProtectedRoute>}/>
 <Route path='/profile/update' element={ <ProtectedRoute> <UpdateProfile/> </ProtectedRoute> }/>

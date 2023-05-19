@@ -9,7 +9,8 @@ import { Link , useNavigate} from 'react-router-dom';
 import CheckOutSteps from './CheckOutSteps';
 import {useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement} from '@stripe/react-stripe-js'
 import axios from 'axios';
-import ConfirmOrder from './ConfirmOrder';
+import { createOrder, clearErrors } from '../../redux/reducers/orders/orderActions';
+
 
 
 const options = {
@@ -26,14 +27,39 @@ const options = {
 
 const Payment = () => {
 
-  const {user}= useSelector((state) => state.auth) 
 
     const stripe = useStripe()
     const elements = useElements()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+
+
+  const {user}= useSelector((state) => state.auth) 
+  const { error} =useSelector((state) => state.newOrder)
+  const {shippingInfo, cartItems}= useSelector(state => state.cart)
+
+
+  useEffect(() => {
+
+    if(error){
+      toast.error(error)
+      dispatch(clearErrors())
+    }
+  }, [dispatch, error])
+    const order = {
+      orderItems:cartItems,
+      shippingInfo
+    }
     
     const orderInfo = JSON.parse(sessionStorage.getItem('orderInfo'))
+
+   if(orderInfo){
+    order.itemsPrice = orderInfo.itemsPrice
+       order.taxPrice =  orderInfo.taxPrice
+    order.shippingPrice = orderInfo.shippingPrice
+    order.totalPrice =orderInfo.totalPrice
+   }
 
     const paymentData = {
 
@@ -81,6 +107,12 @@ const Payment = () => {
 
           //process payment
           if(results.paymentIntent.status === 'succeeded'){
+            order.paymentInfo = {
+              id:results.paymentIntent.id,
+              status:results.paymentIntent.status
+            }
+
+            dispatch(createOrder(order))
             navigate('/success')
           }else {
             toast.error('there is some issue during payment processing')
