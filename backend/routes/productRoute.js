@@ -12,6 +12,6 @@ router.route('/admin/product/:id').delete(isAuthenticatedUser, authorizedRoles('
 
 //review routes
 router.route('/review').put(isAuthenticatedUser, createProductReview)
-router.route('/reviews/').get(isAuthenticatedUser,  getProductsReviews)
+router.route('/product/reviews').get(isAuthenticatedUser,  getProductsReviews)
 router.route('/reviews/delete').delete(isAuthenticatedUser, deleteProductReview)
 module.exports = router

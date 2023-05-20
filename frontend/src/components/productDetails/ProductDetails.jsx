@@ -1,18 +1,24 @@
 import React, {useEffect , useState} from 'react'
 import  {useSelector, useDispatch , } from 'react-redux'
 import { useParams } from 'react-router-dom';
-import { clearErrors, getProductsDetails } from '../../redux/reducers/product/productActions';
+import { clearErrors, getProductsDetails, newReview } from '../../redux/reducers/product/productActions';
 import Loader from '../Layout/Loader'
 import MetaData from '../Layout/metaData';
 import { toast} from 'react-toastify'
 import {FaStar} from 'react-icons/fa'
 import { Carousel } from 'react-bootstrap';
 import { addItemsToCart } from '../../redux/reducers/cart/cartAction';
+import { PRODUCTS_ACTION_TYPE } from '../../redux/reducers/product/productConstants';
+import ListReviews from '../review/ListReviews';
 
 const ProductDetails = () => {
     const  { id } = useParams();
 
     const [quantity, setQuantity]= useState(1)
+    const [rating, setRating]= useState(0)
+
+    const [comment, setComment]= useState("")
+
 
 
     // console.log(id)
@@ -21,6 +27,9 @@ const ProductDetails = () => {
 
 
     const {product,isLoading, error} = useSelector((state) => state.productDetails)
+    
+    const {error:reviewError,success} = useSelector((state) => state.newReview)
+    const {user} = useSelector((state) => state.auth)
     // console.log(product)
 
 
@@ -30,7 +39,19 @@ const ProductDetails = () => {
 toast.error(error)
         dispatch(clearErrors())
       }
-    }, [dispatch, id, error])
+
+      if(reviewError){
+        toast.error(reviewError)
+                dispatch(clearErrors())
+              }
+
+              if(success){
+                toast.success('Review Posted succesfully')
+                dispatch({type:PRODUCTS_ACTION_TYPE.NEW_REVIEW_DETAILS_RESET})
+              }
+
+
+    }, [dispatch, id, reviewError, success, error])
 
 
     const increaseQty = () => {
@@ -62,6 +83,54 @@ toast.error(error)
         toast.success('product added successfully')
 
 
+    }
+
+    function setUserRatings() {
+        const stars = document.querySelectorAll('.star');
+
+        stars.forEach((star, index) => {
+            star.starValue = index + 1;
+
+            ['click', 'mouseover', 'mouseout'].forEach(function (e) {
+                star.addEventListener(e, showRatings);
+            })
+        })
+
+        function showRatings(e) {
+            stars.forEach((star, index) => {
+                if (e.type === 'click') {
+                    if (index < this.starValue) {
+                        star.classList.add('orange');
+
+                        setRating(this.starValue)
+                    } else {
+                        star.classList.remove('orange')
+                    }
+                }
+
+                if (e.type === 'mouseover') {
+                    if (index < this.starValue) {
+                        star.classList.add('yellow');
+                    } else {
+                        star.classList.remove('yellow')
+                    }
+                }
+
+                if (e.type === 'mouseout') {
+                    star.classList.remove('yellow')
+                }
+            })
+        }
+    }
+
+    const reviewHandler = () => {
+        const formData = new FormData();
+
+        formData.set('rating', rating);
+        formData.set('comment', comment);
+        formData.set('productId', id);
+
+        dispatch(newReview(formData));
     }
 
 
@@ -116,11 +185,14 @@ toast.error(error)
         <h4 className="mt-2">Description:</h4>
         <p>{product.description}</p>
         <hr/>
+
         <p id="product_seller mb-3">Sold by: <strong>{product.seller}</strong></p>
         
-        <button id="review_btn" type="button" className="btn btn-primary mt-4" data-toggle="modal" data-target="#ratingModal">
+        {user ?        <button onClick={setUserRatings}  id="review_btn" type="button" className="btn btn-primary mt-4" data-toggle="modal" data-target="#ratingModal">
                     Submit Your Review
-        </button>
+        </button>  :
+        <div className='alert alert-danger mt-5' type='alert'>Login to post your review</div> }
+ 
         
         <div className="row mt-2 mb-5">
             <div className="rating w-50">
@@ -136,19 +208,19 @@ toast.error(error)
                             </div>
                             <div className="modal-body">
 
-                                <ul className="stars" >
-                                    <li className="star"><FaStar size={40} /></li>
-                                    <li className="star"><FaStar size={40} /></li>
-                                    <li className="star"><FaStar size={40} /></li>
-                                    <li className="star"><FaStar size={40} /></li>
-                                    <li className="star"><FaStar size={40} /></li>
-                                </ul>
+<ul className="stars" >
+    <li className="star"><i className="fa fa-star"></i></li>
+    <li className="star"><i className="fa fa-star"></i></li>
+    <li className="star"><i className="fa fa-star"></i></li>
+    <li className="star"><i className="fa fa-star"></i></li>
+    <li className="star"><i className="fa fa-star"></i></li>
+</ul>
 
-                                <textarea name="review" id="review" className="form-control mt-3">
+                                <textarea name="review" id="review" className="form-control mt-3" value={comment} onChange={(e) => setComment(e.target.value)}>
 
                                 </textarea>
 
-                                <button className="btn my-3 float-right review-btn px-4 text-white" data-dismiss="modal" aria-label="Close" >Submit</button>
+                                <button className="btn my-3 float-right review-btn px-4 text-white" data-dismiss="modal" aria-label="Close"  onClick={reviewHandler}>Submit</button>
                             </div>
                         </div>
                     </div>
@@ -161,6 +233,10 @@ toast.error(error)
 </div>
 
 </div>
+
+{product.reviews && product.reviews.length > 0 && (
+                        <ListReviews reviews={product.reviews} />
+                    )}
 
 </>
  )}

@@ -57,6 +57,43 @@ export const getProductsDetails = (id) => async(dispatch) => {
     }}
 
 
+    //create as review
+    export const newReview = (reviewData) => async(dispatch) => {
+
+        try {
+    
+            dispatch({
+                type:PRODUCTS_ACTION_TYPE.NEW_REVIEW_DETAILS_START
+    
+            })
+            // const id =  req.params.id
+            const config = {
+                headers:{
+    
+                    'Content-Type':'application/json'
+                }
+    
+            }
+            const {data} = await axios.put('/api/v1/review', reviewData, config)
+            // console.log(data)
+            dispatch({
+                type:PRODUCTS_ACTION_TYPE.NEW_REVIEW_DETAILS_SUCCESS,
+                payload:data.success
+            })
+    
+        } catch (error) {
+            dispatch({
+                type:PRODUCTS_ACTION_TYPE.NEW_REVIEW_DETAILS_FAILED,
+                payload:error.response.data.message
+    
+            })
+            
+        }}
+    
+
+        
+
+
 
     //clear errors
 

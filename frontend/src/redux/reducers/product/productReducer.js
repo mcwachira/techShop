@@ -41,3 +41,39 @@ export const productReducer  = (state =INITIAL_STATE, action ={} ) => {
     }
 
 }
+
+export const newReviewReducer  = (state={ isLoading:false, error:null, success:false}, action ={} ) => {
+    switch(action.type){
+
+        case PRODUCTS_ACTION_TYPE.NEW_REVIEW_DETAILS_START:
+            return {
+               isLoading:true,
+               products:[]
+            }
+
+            case PRODUCTS_ACTION_TYPE.NEW_REVIEW_DETAILS_SUCCESS:
+                return {
+                  success:action.payload,
+                   isLoading:false,
+                }
+
+                case PRODUCTS_ACTION_TYPE.NEW_REVIEW_DETAILS_FAILED:
+                    return {
+                       isLoading:false, error:action.payload
+                    } 
+
+                    case PRODUCTS_ACTION_TYPE.NEW_REVIEW_DETAILS_RESET:
+                        return {
+                            ...state,
+                            success:false
+                        }
+                    case PRODUCTS_ACTION_TYPE.CLEAR_ERRORS:
+                    return {
+                       error:null
+                    } 
+
+                    default:
+                        return state
+    }
+
+}
