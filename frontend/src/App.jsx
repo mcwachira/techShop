@@ -26,6 +26,8 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import Payment from './components/cart/Payment'
 import OrderSuccess from './components/cart/OrderSuccess'
+import ListOrders from './components/order/ListOrders'
+import OrderDetails from './components/order/OrderDetails'
 
 function App() {
   //Loads logged in user if present
@@ -75,6 +77,8 @@ getStripeApiKey()
 <Route path='/password/update' element={ <ProtectedRoute> <UpdatePassword/> </ProtectedRoute> }/>
 <Route path='/shipping' element={ <ProtectedRoute> <ShippingInfo/> </ProtectedRoute> }/>
 <Route path='/order/confirm' element={ <ProtectedRoute> <ConfirmOrder/> </ProtectedRoute> }/>
+<Route path='/orders/me' element={ <ProtectedRoute> <ListOrders/> </ProtectedRoute> }/>
+<Route path='/orders/:id' element={ <ProtectedRoute> <OrderDetails/> </ProtectedRoute> }/>
 
 
 {
