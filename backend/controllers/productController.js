@@ -133,6 +133,36 @@ exports.updateProduct = CatchAsyncErrors(async(req, res, next) =>{
                       return next(new ErrorHandler('product with that id not found', 404))
         }
 
+        let images = [];
+        if(typeof req.body.images === 'string') {
+            images.push(req.body.images)
+        }else{
+            images = req.body.images
+        }
+
+        if(images !== undefined) {
+             // Deleting images associated with the product
+    for (let i = 0; i < product.images.length; i++) {
+        const result = await cloudinary.uploader.destroy(product.images[i].public_id)
+    }
+    let imagesLinks = [];
+    
+    for(let i =0; i<images.length;i++){
+        const results = await cloudinary.uploader.upload(images[i], {
+            folder: "products"
+        })
+
+        imagesLinks.push({
+            public_id:results.public.id,
+            url:results.secure_url
+        })
+    }
+
+    req.body.images = imagesLinks
+        }
+    
+    
+    
         const ProductToUpdate = await Product.findByIdAndUpdate(id, req.body ,{
 
             new:true,
@@ -163,7 +193,14 @@ exports.deleteProduct = asyncHandler(async(req, res, next) =>{
         if(!product){
                       return next(new ErrorHandler('product with that id not found', 404))
         }
-        const ProductToDelete = await Product.findByIdAndDelete(id)
+
+        //delete products associated with the images
+     // Deleting images associated with the product
+    for (let i = 0; i < product.images.length; i++) {
+        const result = await cloudinary.uploader.destroy(product.images[i].public_id)
+    }
+
+    await product.remove();
         res.status(200).json({
             success:true,
             message:'product deleted successfully',

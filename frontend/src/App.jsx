@@ -32,6 +32,7 @@ import DashBoard from './components/admin/DashBoard'
 import ProductList from './components/admin/ProductList'
 import NewProduct from './components/admin/NewProduct'
 import { useSelector } from 'react-redux'
+import UpdateProduct from './components/admin/UpdateProduct'
 
 function App() {
   //Loads logged in user if present
@@ -106,9 +107,10 @@ getStripeApiKey()
 
 <Route path='/product/:id' element={<ProductDetails/>}/>
 
-<Route path='/dashboard' element={ <ProtectedRoute isAdmin={true}> <DashBoard/> </ProtectedRoute> }/>
+<Route path='/admin/dashboard' element={ <ProtectedRoute isAdmin={true}> <DashBoard/> </ProtectedRoute> }/>
 <Route path='/admin/products' element={ <ProtectedRoute isAdmin={true}> <ProductList/> </ProtectedRoute> }/>
 <Route path='/admin/product/new' element={ <ProtectedRoute isAdmin={true}> <NewProduct/> </ProtectedRoute> }/>
+<Route path='/admin/product/:id' element={ <ProtectedRoute isAdmin={true}> <UpdateProduct/> </ProtectedRoute> }/>
     </Routes>
     </div>
     

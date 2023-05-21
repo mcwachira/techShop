@@ -163,6 +163,72 @@ export const getProductsDetails = (id) => async(dispatch) => {
         
 
 
+    //update product details admin
+
+          
+
+            export const updateProduct = (id, productData) => async(dispatch) => {
+
+                try {
+            
+                    dispatch({
+                        type:PRODUCTS_ACTION_TYPE.UPDATE_PRODUCT_START
+            
+                    })
+                    const config = {
+                        headers:{
+            
+                            'Content-Type':'application/json'
+                        }
+            
+                    }
+                    //get product data from backend via axios
+                    const {data} = await axios.put(`/api/v1/admin/product/${id}` , productData, config)
+                    // console.log(data)
+                    dispatch({
+                        type:PRODUCTS_ACTION_TYPE.UPDATE_PRODUCT_SUCCESS,
+                        payload:data.success
+                    })
+            
+                } catch (error) {
+                    dispatch({
+                        type:PRODUCTS_ACTION_TYPE.UPDATE_PRODUCT_FAILED,
+                        payload:error.response.data.message
+            
+                    })
+                    
+                }}
+
+
+            //delete product admin
+
+            export const deleteProduct = (id) => async(dispatch) => {
+
+                try {
+            
+                    dispatch({
+                        type:PRODUCTS_ACTION_TYPE.DELETE_PRODUCT_START
+            
+                    })
+                    // const id =  req.params.id
+            
+                    //get product data from backend via axios
+                    const {data} = await axios.delete(`/api/v1/admin/product/${id}`)
+                    // console.log(data)
+                    dispatch({
+                        type:PRODUCTS_ACTION_TYPE.DELETE_PRODUCT_SUCCESS,
+                        payload:data.success
+                    })
+            
+                } catch (error) {
+                    dispatch({
+                        type:PRODUCTS_ACTION_TYPE.DELETE_PRODUCT_FAILED,
+                        payload:error.response.data.message
+            
+                    })
+                    
+                }}
+
     //clear errors
 
     export const clearErrors = () => async(dispatch) => {
