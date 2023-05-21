@@ -4,6 +4,7 @@ const CatchAsyncErrors= require('../middlewares/catchAsyncErrors')
 const asyncHandler = require('express-async-handler')
 const APIFeatures = require('../utils/apiFeatures')
 const product = require('../models/product')
+const cloudinary = require('cloudinary').v2;
 
 
 
@@ -11,9 +12,32 @@ const product = require('../models/product')
 //create a new product
 
 exports.newProduct =  CatchAsyncErrors(async(req, res, next) =>{
-    console.log(req.body)
+
+    let images = [];
+    if(typeof req.body.images === 'string') {
+        images.push(req.body.images)
+    }else{
+        images = req.body.images
+    }
 
 
+    let imagesLinks = [];
+
+    for(let i =0; i<images.length;i++){
+        const results = await cloudinary.uploader.upload(images[i], {
+            folder: "products"
+        })
+
+        imagesLinks.push({
+            public_id:results.public.id,
+            url:results.secure_url
+        })
+    }
+
+
+  
+
+    req.body.images = imagesLinks
      req.body.user = req.user.id
         const product = await Product.create(req.body)
         console.log(product)
@@ -52,6 +76,22 @@ exports.getProducts =CatchAsyncErrors(async(req, res, next) =>{
             productCount,
             resultsPerPage
         
+        })
+
+
+})
+
+
+//get admin products /api/v1/admin/products
+exports.getAdminProducts =CatchAsyncErrors(async(req, res, next) =>{
+
+
+        const products = await Product.find()
+        res.status(200).json({
+            success:true,
+
+           products,
+
         })
 
 

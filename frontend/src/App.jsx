@@ -28,6 +28,10 @@ import Payment from './components/cart/Payment'
 import OrderSuccess from './components/cart/OrderSuccess'
 import ListOrders from './components/order/ListOrders'
 import OrderDetails from './components/order/OrderDetails'
+import DashBoard from './components/admin/DashBoard'
+import ProductList from './components/admin/ProductList'
+import NewProduct from './components/admin/NewProduct'
+import { useSelector } from 'react-redux'
 
 function App() {
   //Loads logged in user if present
@@ -54,8 +58,11 @@ getStripeApiKey()
 
   }, [])
 
-  console.log(stripeApiKey)
+  const { user, isAuthenticated, isLoading } = useSelector(state => state.auth)
+
+  //console.log(stripeApiKey)
   return (
+
     <div className='App'>
 
 <Header/>
@@ -81,6 +88,7 @@ getStripeApiKey()
 <Route path='/orders/:id' element={ <ProtectedRoute> <OrderDetails/> </ProtectedRoute> }/>
 
 
+
 {
  stripeApiKey && 
 <Route path='/payment' element={ <Elements stripe={loadStripe(stripeApiKey)}> 
@@ -97,10 +105,16 @@ getStripeApiKey()
 
 
 <Route path='/product/:id' element={<ProductDetails/>}/>
-    </Routes> 
-      
+
+<Route path='/dashboard' element={ <ProtectedRoute isAdmin={true}> <DashBoard/> </ProtectedRoute> }/>
+<Route path='/admin/products' element={ <ProtectedRoute isAdmin={true}> <ProductList/> </ProtectedRoute> }/>
+<Route path='/admin/product/new' element={ <ProtectedRoute isAdmin={true}> <NewProduct/> </ProtectedRoute> }/>
+    </Routes>
     </div>
-<Footer/>
+    
+    {!isLoading && (!isAuthenticated || user.role !== 'admin') && (
+          <Footer />
+        )}
 <ToastContainer/>
     </div>
   )

@@ -2,10 +2,11 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import LoadingToRedirect from '../../util/LoadingToRedirect'
 
-const ProtectedRoute = ({children}) => {
+const ProtectedRoute = ({children , isAdmin}) => {
 
     const {user, isAuthenticated}= useSelector((state) => state.auth) 
-  return isAuthenticated === true && user ? (
+    console.log(user)
+  return isAuthenticated === true && user  || user?.role ==='admin' ? (
     <div>{children}</div>
   ):(
     <LoadingToRedirect/>
