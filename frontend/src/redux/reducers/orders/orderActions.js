@@ -79,6 +79,28 @@ export const getOrderDetails = (id) => async(dispatch) => {
 
 
  
+
+//Get the orders in admin dashboard
+export const allOrders = () => async(dispatch) => {
+    try{
+
+        dispatch({type:ORDER_ACTION_TYPE.ALL_ORDERS_START})
+
+        
+        const { data } = await axios.get('/api/v1/admin/orders')
+
+        dispatch({
+            type:ORDER_ACTION_TYPE.ALL_ORDERS_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type:ORDER_ACTION_TYPE.ALL_ORDERS_FAILED,
+            payload: error.response.data.message
+        })
+    }
+}
     //clear errors
 
     export const clearErrors = () => async(dispatch) => {
@@ -87,3 +109,70 @@ export const getOrderDetails = (id) => async(dispatch) => {
     
     })
 }
+
+
+    //update order details admin
+
+          
+
+    export const updateOrder= (id, orderData) => async(dispatch) => {
+
+        try {
+    
+            dispatch({
+                type:ORDER_ACTION_TYPE.UPDATE_ORDER_START
+    
+            })
+            const config = {
+                headers:{
+    
+                    'Content-Type':'application/json'
+                }
+    
+            }
+            //get product data from backend via axios
+            const {data} = await axios.put(`/api/v1/admin/order/${id}` , orderData, config)
+            // console.log(data)
+            dispatch({
+                type:ORDER_ACTION_TYPE.UPDATE_ORDER_SUCCESS,
+                payload:data.success
+            })
+    
+        } catch (error) {
+            dispatch({
+                type:ORDER_ACTION_TYPE.UPDATE_ORDER_FAILED,
+                payload:error.response.data.message
+    
+            })
+            
+        }}
+
+
+            //delete product admin
+
+            export const deleteOrder = (id) => async(dispatch) => {
+
+                try {
+            
+                    dispatch({
+                        type:ORDER_ACTION_TYPE.DELETE_ORDER_START
+            
+                    })
+                    // const id =  req.params.id
+            
+                    //get product data from backend via axios
+                    const {data} = await axios.delete(`/api/v1/admin/order/${id}`)
+                    // console.log(data)
+                    dispatch({
+                        type:ORDER_ACTION_TYPE.DELETE_ORDER_SUCCESS,
+                        payload:data.success
+                    })
+            
+                } catch (error) {
+                    dispatch({
+                        type:ORDER_ACTION_TYPE.DELETE_ORDER_FAILED,
+                        payload:error.response.data.message
+            
+                    })
+                    
+                }}

@@ -26,7 +26,7 @@ const SideBar = () => {
                     </li>
 
                     <li>
-                        <Link to='/admin/products'><i className="fa fa-shopping-basket"></i> Orders</Link>
+                        <Link to='/admin/orders'><i className="fa fa-shopping-basket"></i> Orders</Link>
                     </li>
 
                     <li>
