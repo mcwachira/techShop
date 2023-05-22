@@ -276,19 +276,19 @@ exports.getUserProfile =  CatchAsyncErrors(async(req, res, next) =>{
 
 
 
-//admin routes
-exports.getAllUsers =  CatchAsyncErrors(async(req, res, next) =>{
+// Admin Routes
 
+// Get all users   =>   /api/v1/admin/users
+exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
+    const users = await User.find();
 
-    const users = await User.find()
-
+    console.log(users)
     res.status(200).json({
-        success:true,
+        success: true,
         users
-    
     })
-
 })
+
 
 exports.getUserById =  CatchAsyncErrors(async(req, res, next) =>{
     const id = req.params.id

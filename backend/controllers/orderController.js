@@ -57,29 +57,22 @@ exports.allOrders = CatchAsyncErrors(async(req, res, next) =>{
     //number of orders tro display per page
 
 
-    //order count
-    const orderCount = await Order.countDocuments()
-    let total = 0;
+    const orders = await Order.find()
 
+    let totalAmount = 0;
 
+    orders.forEach(order => {
+        totalAmount += order.totalPrice
+    })
 
-    //find order by  search term
-    // const  apiFeatures= new APIFeatures(order.find(), req.query).search().filter().pagination(resultsPerPage)
-
-
-        const orders = await Order.find()
-orders.map((order) => total+=order.totalPrice)
-        res.status(200).json({
-            success:true,
-            message:'This will show all the orders',
-          orders,
-           orderCount,
-           total,
-        
-        })
-
-
+    console.log(totalAmount)
+    res.status(200).json({
+        success: true,
+        totalAmount,
+        orders
+    })
 })
+
 
 exports.getSingleOrder =  CatchAsyncErrors(async(req, res, next) =>{
     const id = req.params.id

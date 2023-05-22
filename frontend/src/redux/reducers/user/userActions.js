@@ -145,14 +145,6 @@ export const getUserDetails = (id) => async(dispatch) => {
             
         }}
     
-    //clear errors
-
-    export const clearErrors = () => async(dispatch) => {
-        dispatch({
-            type:USERS_ACTION_TYPE.CLEAR_ERRORS
-    
-    })
-}
 
 
 export const updateProfile = (userData) => async(dispatch) => {
@@ -288,4 +280,85 @@ export const updatePassword = (passwords) => async(dispatch) => {
             
         }}
 
-    
+    // Get all users
+export const allUsers = () => async (dispatch) => {
+    try {
+
+        dispatch({ type:USERS_ACTION_TYPE.FETCH_ALL_USERS_START })
+        const { data } = await axios.get('/api/v1/admin/users')
+        
+
+        console.log(data)
+        dispatch({
+                type: USERS_ACTION_TYPE.FETCH_ALL_USERS_SUCCESS,
+            payload: data.users
+        })
+
+    } catch (error) {
+        dispatch({
+            type: USERS_ACTION_TYPE.FETCH_ALL_USERS_FAILED,
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+
+// Update user - ADMIN
+export const updateUser = (id, userData) => async (dispatch) => {
+    try {
+
+        dispatch({ type: USERS_ACTION_TYPE.UPDATE_USERS_START })
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const { data } = await axios.put(`/api/v1/admin/user/update/${id}`, userData, config)
+
+        dispatch({
+            type: USERS_ACTION_TYPE.UPDATE_PASSWORD_SUCCESS,
+            payload: data.success
+        })
+
+    } catch (error) {
+        dispatch({
+            type: USERS_ACTION_TYPE.UPDATE_PASSWORD_FAILED,
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+
+// Delete user - ADMIN
+export const deleteUser = (id) => async (dispatch) => {
+    try {
+
+        dispatch({ type: USERS_ACTION_TYPE.DELETE_USERS_START })
+
+        const { data } = await axios.delete(`/api/v1/admin/user/${id}`)
+
+
+        dispatch({
+            type: USERS_ACTION_TYPE.DELETE_USERS_SUCCESS,
+            payload: data.success
+        })
+
+    } catch (error) {
+        dispatch({
+            type: USERS_ACTION_TYPE.DELETE_USERS_FAILED,
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+// Clear Errors
+export const clearErrors = () => async (dispatch) => {
+    dispatch({
+        type: USERS_ACTION_TYPE.CLEAR_ERRORS
+    })
+}
