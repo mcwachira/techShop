@@ -103,7 +103,8 @@ if(!user){
 
     //create a password url
     //req.protocol}://${req.get('host')}api/v1/
-    const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+    // Create reset password url
+    const resetUrl = `${req.protocol}://${req.get('host')}/password/reset/${resetToken}`;
     console.log(resetUrl)
 
     const message = `Your password reset token is as follows :\n\n${resetUrl}\n\nIf you have not requested this email then ignore it`
