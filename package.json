@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "backend/server.js",
-  "scripts": {
-    "start": "node backend/server.js",
-    "server": "nodemon backend/server.js",
-    "seeder": "nodemon backend/utils/seeder.js",
-    "dev": "set NODE_ENV=development&& nodemon backend/server.js ",
-    "prod": "set NODE_ENV=production&& nodemon backend/server.js "
-  },
+    "scripts": {
+      "start": "node  backend/server.js",
+      "server": "nodemon  backend/server.js",
+      "client": "npm run dev --prefix frontend",
+      "dev": "concurrently \"npm run server\" \"npm run client\""
+    },
   "keywords": [],
   "author": "",
   "license": "ISC",
